@@ -12,16 +12,6 @@ const paths = {
     tests: ['./server/test/**/*.test.js']
 };
 
-process
-    .on('unhandledRejection', (reason, p) => {
-        console.error(reason, 'Unhandled Rejection at Promise', p);
-    })
-    .on('uncaughtException', err => {
-        console.error(err, 'Uncaught Exception thrown');
-        process.exit(1);
-    });
-
-
 // Clean up dist directory
 function clean(cb) {
     del.sync(['dist/**']);
@@ -68,6 +58,7 @@ function test(cb) {
         })*/;
 }
 
+
 // pm2 connect
 function pm2Start(cb) {
     pm2.connect(err => {
@@ -83,11 +74,13 @@ function pm2Start(cb) {
     })
 }
 
+gulp.task('default', gulp.series(babel, pm2Start));
+
 gulp.task('mocha', gulp.series(clean, babel, setEnv, test, done => done()));
 
-gulp.task('watch', () => {
+gulp.task('watch', gulp.series(clean, babel, pm2Start, () => {
     gulp.watch(paths.js, gulp.series(babel, pm2Start));
-});
+}));
 
 
 

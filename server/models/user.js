@@ -1,55 +1,8 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import schema from './schemas/user';
 
-const UserSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    lastName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    type: {
-        type: String,
-        trim: true,
-        lowercase: true,
-        enum: [
-            'guru',
-            'adept'
-        ]
-    },
-    nickname: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    password: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    rating: {
-        type: String,
-        trim: true
-    },
-    age: {
-        type: Number,
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        required: true
-    }
-});
+const UserSchema = new mongoose.Schema(schema);
 
 
 UserSchema.pre('save', function (next) {

@@ -1,53 +1,53 @@
-import Message from '../models/message';
+import Rating from '../models/rating';
 
 function load(req, res, next, id) {
-    Message.findById(id)
+    Rating.findById(id)
         .exec()
-        .then((message) => {
-            req.dbMessage = message;
+        .then((rating) => {
+            req.dbRating = rating;
             return next();
         }, (e) => next(e));
 }
 
 function get(req, res) {
-    return res.json(req.dbMessage);
+    return res.json(req.dbRating);
 }
 
 function create(req, res, next) {
-    Message.create({
+    Rating.create({
         owner: req.body.owner,
         text: req.body.text,
         title: req.body.title
     })
-        .then((savedMessage) => {
-            return res.json(savedMessage);
+        .then((savedRating) => {
+            return res.json(savedRating);
         }, (e) => {
             next(e)
         });
 }
 
 function update(req, res, next) {
-    const message = req.dbMessage;
-    Object.assign(message, req.body);
+    const rating = req.dbRating;
+    Object.assign(rating, req.body);
 
-    message.save()
+    rating.save()
         .then(() => res.sendStatus(204),
             (e) => next(e));
 }
 
 function list(req, res, next) {
     const { limit = 50, skip = 0 } = req.query;
-    Message.find()
+    Rating.find()
         .skip(skip)
         .limit(limit)
         .exec()
-        .then((messages) => res.json(messages),
+        .then((ratings) => res.json(ratings),
             (e) => next(e));
 }
 
 function remove(req, res, next) {
-    const message = req.dbMessage;
-    message.remove()
+    const rating = req.dbRating;
+    rating.remove()
         .then(() => res.sendStatus(204),
             (e) => next(e));
 }

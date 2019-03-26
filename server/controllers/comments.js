@@ -1,53 +1,53 @@
-import Message from '../models/message';
+import Comment from '../models/comment';
 
 function load(req, res, next, id) {
-    Message.findById(id)
+    Comment.findById(id)
         .exec()
-        .then((message) => {
-            req.dbMessage = message;
+        .then((comment) => {
+            req.dbComment = comment;
             return next();
         }, (e) => next(e));
 }
 
 function get(req, res) {
-    return res.json(req.dbMessage);
+    return res.json(req.dbComment);
 }
 
 function create(req, res, next) {
-    Message.create({
+    Comment.create({
         owner: req.body.owner,
         text: req.body.text,
         title: req.body.title
     })
-        .then((savedMessage) => {
-            return res.json(savedMessage);
+        .then((savedComment) => {
+            return res.json(savedComment);
         }, (e) => {
             next(e)
         });
 }
 
 function update(req, res, next) {
-    const message = req.dbMessage;
-    Object.assign(message, req.body);
+    const comment = req.dbComment;
+    Object.assign(comment, req.body);
 
-    message.save()
+    comment.save()
         .then(() => res.sendStatus(204),
             (e) => next(e));
 }
 
 function list(req, res, next) {
     const { limit = 50, skip = 0 } = req.query;
-    Message.find()
+    Comment.find()
         .skip(skip)
         .limit(limit)
         .exec()
-        .then((messages) => res.json(messages),
+        .then((comments) => res.json(comments),
             (e) => next(e));
 }
 
 function remove(req, res, next) {
-    const message = req.dbMessage;
-    message.remove()
+    const comment = req.dbComment;
+    comment.remove()
         .then(() => res.sendStatus(204),
             (e) => next(e));
 }
