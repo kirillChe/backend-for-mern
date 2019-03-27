@@ -44,7 +44,7 @@ function test(cb) {
             reporter:'spec',
             ui: 'bdd',
             timeout: 2000,
-            require: ['@babel/register'],
+            require: ['@babel/register', '@babel/polyfill'],
             exit: true
         }))/*
         .once('error', (err) => {

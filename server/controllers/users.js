@@ -1,36 +1,44 @@
 import User from '../models/user';
+import R from 'ramda';
+import to from 'await-to-js';
 
-function load(req, res, next, id) {
-    User.findById(id)
-        .exec()
-        .then((user) => {
-            req.dbUser = user;
-            return next();
-        }, (e) => next(e));
+async function load(req, res, next, id) {
+    let user, err;
+
+    [err, user] = await to(User.findById(id).exec());
+    if (err)
+        return next(err);
+
+    req.dbUser = user;
+    return next();
 }
 
 function get(req, res) {
     return res.json(req.dbUser);
 }
 
-function create(req, res, next) {
-    console.log('_________________HERE: 17________________________');
-    User.create({
-        username: req.body.username,
-        password: req.body.password
-    })
-        .then((savedUser) => {
-            return res.json(savedUser);
-        }, (e) => next(e));
+async function create(req, res, next) {
+    let user, err;
+
+    [err, user] = await to(User.create(req.body));
+    if (err)
+        return next(err);
+
+    return res.json(user);
 }
 
-function update(req, res, next) {
+async function update(req, res, next) {
+    //TODO add scoping check
+    let err;
     const user = req.dbUser;
-    Object.assign(user, req.body);
+    let data = R.omit(['createDate', 'type'], req.body);
+    Object.assign(user, data);
 
-    user.save()
-        .then((savedUser) => res.sendStatus(204),
-            (e) => next(e));
+    [err] = await to(user.save());
+    if (err)
+        return next(err);
+
+    return res.sendStatus(204);
 }
 
 function list(req, res, next) {
@@ -43,11 +51,15 @@ function list(req, res, next) {
             (e) => next(e));
 }
 
-function remove(req, res, next) {
+async function remove(req, res, next) {
+    let err;
     const user = req.dbUser;
-    user.remove()
-        .then(() => res.sendStatus(204),
-            (e) => next(e));
+
+    [err] = await to(user.remove());
+    if (err)
+        return next(err);
+
+    return res.sendStatus(204);
 }
 
 export default { load, get, create, update, list, remove };

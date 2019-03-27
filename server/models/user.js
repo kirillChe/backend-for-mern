@@ -4,22 +4,12 @@ import schema from './schemas/user';
 
 const UserSchema = new mongoose.Schema(schema);
 
-
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', async function () {
     const user = this;
-
-    if (!user.isModified('password')) {
-        return next();
+    if (user.isModified('password')) {
+        let salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
     }
-    bcrypt.genSalt(10, (err, salt) => {
-        if (err)
-            return next(err);
-        bcrypt.hash(user.password, salt, (hashErr, hash) => {
-            if (hashErr) return next(hashErr);
-            user.password = hash;
-            next();
-        });
-    });
 });
 
 UserSchema.methods.comparePassword = function (toCompare, done) {

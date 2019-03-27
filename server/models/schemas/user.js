@@ -1,8 +1,20 @@
 import validate from 'mongoose-validator';
 
+validate.extend(
+    'isUnique',
+    async function(val) {
+        let count = await this.model('User').countDocuments({ email: val });
+        return !count;
+    },
+    'Not unique'
+);
+
 const emailValidator = [
     validate({
         validator: 'isEmail'
+    }),
+    validate({
+        validator: 'isUnique'
     })
 ];
 
@@ -22,7 +34,8 @@ const user = {
         lowercase: true,
         enum: [
             'guru',
-            'adept'
+            'adept',
+            'admin'
         ]
     },
     nickname: {
@@ -31,7 +44,7 @@ const user = {
         trim: true
     },
     phone: {
-        type: Number,
+        type: String,
         required: true
     },
     email: {
@@ -51,6 +64,7 @@ const user = {
     },
     createDate: {
         type: Date,
+        default: Date.now,
         required: true
     }
 };
