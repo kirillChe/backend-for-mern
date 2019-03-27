@@ -65,7 +65,7 @@ function pm2Start(cb) {
         if (err)
             console.log('gulpfile.babel.js :27', err);
         pm2.restart({
-            script: path.join('dist', 'index.js')
+            script: path.join('dist', 'app.js')
         }, err => {
             if (err)
                 console.log('gulpfile.babel.js :35', err);
@@ -137,7 +137,7 @@ gulp.task('watch', gulp.series(clean, babel, pm2Start, () => {
 //         if (err)
 //             console.log('gulpfile.babel.js :27', err);
 //         pm2.restart({
-//             script: path.join('dist', 'index.js')
+//             script: path.join('dist', 'app.js')
 //         }, err => {
 //             if (err)
 //                 console.log('gulpfile.babel.js :35', err);
