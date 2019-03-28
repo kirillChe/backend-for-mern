@@ -5,7 +5,7 @@
     "main": "app.js",
     "scripts": {
         "test": "gulp mocha",
-        "debug": "gulp watch"
+        "start": "gulp watch"
     },
     "author": "Kirill Chernichenko",
     "license": "ISC",
