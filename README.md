@@ -6,3 +6,10 @@
     - run app in 'watch' mode: 'gulp watch'
     - view logs: 'pm2 logs'
     - run tests: 'gulp mocha'
+    
+---
+**NOTE**
+
+You must have an installed MongoDB
+
+---
