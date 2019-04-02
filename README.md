@@ -1,8 +1,8 @@
-This project is created to help people to find their own trainers easily.
-It will be possible:
-- to register as user or trainer
-- to have a chat with other users (or trainers)
-- to leave comments for trainers as a user
-- to rate the trainers
-- to find a specific trainer by his name, by rating, by comments etc
-
+Just a simple example of MERN app.
+1. Clone the repository,
+2. Run 'npm install'.
+3. Use the following commands:
+  - run app: 'gulp'
+  - run app in 'watch' mode: 'gulp watch'
+  - view logs: 'pm2 logs'
+  - run tests: 'gulp mocha'
