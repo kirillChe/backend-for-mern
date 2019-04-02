@@ -7,9 +7,4 @@
     - view logs: 'pm2 logs'
     - run tests: 'gulp mocha'
     
----
-**NOTE**
-
-You must have an installed MongoDB
-
----
+> **_NOTE:_**  You must have an installed MongoDB.
